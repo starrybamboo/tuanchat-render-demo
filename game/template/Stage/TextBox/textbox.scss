@@ -1,0 +1,282 @@
+// 科技感对话框样式
+@keyframes textboxScan {
+  0% {
+    transform: translateX(-100%);
+  }
+  100% {
+    transform: translateX(200%);
+  }
+}
+
+@keyframes textGlow {
+  0%, 100% {
+    text-shadow: 0 0 5px rgba(0, 247, 255, 0.8), 0 0 10px rgba(0, 247, 255, 0.5);
+  }
+  50% {
+    text-shadow: 0 0 10px rgba(0, 247, 255, 1), 0 0 20px rgba(0, 247, 255, 0.8);
+  }
+}
+
+@keyframes borderPulse {
+  0%, 100% {
+    border-color: rgba(0, 247, 255, 0.6);
+  }
+  50% {
+    border-color: rgba(0, 247, 255, 1);
+  }
+}
+
+@keyframes dataFlow {
+  0% {
+    background-position: 0% 0%;
+  }
+  100% {
+    background-position: 100% 100%;
+  }
+}
+
+.TextBox_main {
+  z-index: 3;
+  position: absolute;
+  right: 25px;
+  min-height: 330px;
+  max-height: 330px;
+  background-blend-mode: darken;
+  border-radius: 0 10px 10px 0;
+  bottom: 20px;
+  left: 275px;
+  font-weight: bold;
+  color: #00f7ff;
+  padding: 1em 50px 70px 200px;
+  box-sizing: border-box;
+  display: flex;
+  flex-flow: column;
+  align-items: flex-start;
+  letter-spacing: 0.15em;
+  transition: left 0.33s;
+  font-family: "Orbitron", "Microsoft YaHei", sans-serif;
+  
+  // 扫描线效果
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 50%;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, #00f7ff, transparent);
+    animation: textboxScan 3s linear infinite;
+  }
+}
+
+.TextBox_main_miniavatarOff {
+  left: 25px;
+}
+
+.TextBox_Background {
+  z-index: 2;
+  background: linear-gradient(135deg, rgba(0, 20, 40, 0.95) 0%, rgba(0, 40, 80, 0.9) 50%, rgba(0, 30, 60, 0.95) 100%);
+  border: 1px solid rgba(0, 247, 255, 0.4);
+  border-left: 4px solid #00f7ff;
+  box-shadow: 0 0 30px rgba(0, 247, 255, 0.2), 
+              inset 0 0 50px rgba(0, 247, 255, 0.05),
+              0 5px 30px rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(15px);
+  animation: borderPulse 3s ease-in-out infinite;
+  
+  // 网格背景
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: 
+      linear-gradient(rgba(0, 247, 255, 0.03) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(0, 247, 255, 0.03) 1px, transparent 1px);
+    background-size: 20px 20px;
+    pointer-events: none;
+    border-radius: inherit;
+  }
+  
+  // 角落装饰
+  &::after {
+    content: '';
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    width: 40px;
+    height: 40px;
+    border-top: 2px solid #00f7ff;
+    border-right: 2px solid #00f7ff;
+  }
+}
+
+@keyframes showSoftly {
+  0% {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.TextBox_textElement_start {
+  position: relative;
+  animation: TextDelayShow 800ms ease-out forwards;
+  opacity: 0;
+}
+
+.outer {
+  position: absolute;
+  white-space: nowrap;
+  left: 0;
+  top: 0;
+  background-image: linear-gradient(135deg, #00f7ff 0%, #0066ff 50%, #00f7ff 100%);
+  background-clip: text;
+  -webkit-background-clip: text;
+  color: transparent;
+  z-index: 2;
+  animation: textGlow 2s ease-in-out infinite;
+}
+
+.inner {
+  white-space: nowrap;
+  position: absolute;
+  left: 0;
+  top: 0;
+  -webkit-text-stroke: 0.08em rgba(0, 30, 60, 0.8);
+  z-index: 1;
+}
+
+.zhanwei {
+  color: transparent;
+  white-space: nowrap;
+}
+
+
+.TextBox_textElement_Settled {
+  position: relative;
+  opacity: 1;
+}
+
+
+.TextBox_showName {
+  font-size: 85%;
+  padding: 0 2em 0 2em;
+  position: absolute;
+  left: 150px;
+  top: -68px;
+  height: 80px;
+  line-height: 68px;
+  border-radius: 0;
+  z-index: 3;
+  border: 2px solid rgba(0, 247, 255, 0.5);
+  font-family: "Orbitron", "Microsoft YaHei", sans-serif;
+  letter-spacing: 0.15em;
+}
+
+.TextBox_ShowName_Background {
+  z-index: 2;
+  background: linear-gradient(135deg, rgba(0, 40, 80, 0.95), rgba(0, 60, 100, 0.9));
+  border: 2px solid rgba(0, 247, 255, 0.6);
+  border-left: 4px solid #00f7ff;
+  box-shadow: 0 0 20px rgba(0, 247, 255, 0.3), 
+              0 4px 15px rgba(0, 0, 0, 0.4);
+  backdrop-filter: blur(10px);
+  
+  // 发光边缘
+  &::before {
+    content: '';
+    position: absolute;
+    top: -2px;
+    left: -4px;
+    right: -2px;
+    bottom: -2px;
+    background: linear-gradient(90deg, #00f7ff, transparent);
+    z-index: -1;
+    opacity: 0.3;
+    filter: blur(5px);
+  }
+}
+
+@keyframes TextDelayShow {
+  0% {
+    opacity: 0;
+    transform: translateX(-10px);
+    filter: blur(2px);
+  }
+
+  100% {
+    opacity: 1;
+    transform: translateX(0);
+    filter: blur(0);
+  }
+}
+
+.miniAvatarContainer {
+  position: absolute;
+  height: 450px;
+  width: 450px;
+  bottom: 0;
+  left: -250px;
+  border-radius: 0;
+  overflow: hidden;
+}
+
+.miniAvatarImg {
+  max-height: 100%;
+  max-width: 100%;
+  position: absolute;
+  bottom: 0;
+  filter: drop-shadow(0 0 20px rgba(0, 247, 255, 0.5)) 
+          drop-shadow(15px 0 3px rgba(0, 0, 0, 0.5));
+}
+
+.nameContainer {
+  position: absolute;
+  left: 2em;
+  top: -3.5em;
+}
+
+.outerName {
+  position: absolute;
+  left: 0;
+  top: 0;
+  background: linear-gradient(135deg, #00f7ff 0%, #ffffff 50%, #00f7ff 100%);
+  background-clip: text;
+  -webkit-background-clip: text;
+  color: transparent;
+  z-index: 2;
+  text-shadow: 0 0 10px rgba(0, 247, 255, 0.5);
+}
+
+.innerName {
+  position: absolute;
+  left: 0;
+  top: 0;
+  z-index: 1;
+  -webkit-text-stroke: 0.05em rgba(0, 30, 60, 0.6);
+}
+
+.text {
+  overflow: hidden;
+  position: relative;
+  
+  // 文字扫描效果
+  &::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent 0%, rgba(0, 247, 255, 0.1) 50%, transparent 100%);
+    animation: dataFlow 5s linear infinite;
+    pointer-events: none;
+  }
+}

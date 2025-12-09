@@ -1,0 +1,15 @@
+# Node / general
+node_modules/
+dist/
+build/
+npm-debug.log
+yarn-error.log
+package-lock.json
+pnpm-lock.yaml
+
+# OS
+Thumbs.db
+.DS_Store
+
+# Visual Studio Code
+.vscode/
