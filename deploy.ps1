@@ -1,6 +1,6 @@
 # deploy.ps1 - helper for creating repo and pushing to GitHub with GitHub CLI
 param(
-    [string]$username = "<YOUR_USERNAME>",
+    [string]$username = "starrybamboo",
     [string]$repo = "tuanchat-render-demo",
     [switch]$public
 )
