@@ -90,6 +90,20 @@ git push -u origin main
 - 工作流文件位于 `.github/workflows/deploy.yml`，会在 push 到 `main` 或 `master` 时把站点内容发布到 `gh-pages` 分支。
  - 工作流文件位于 `.github/workflows/deploy.yml`，会在 push 到 `main` 或 `master` 时把站点内容发布到 `gh-pages` 分支。
    - 该 workflow 在发布前，会清理并重新创建一个 `public/` 目录，使用 `rsync` 将仓库内容（排除 `.github`、`.git`、README 等）复制到 `public/` 并发布以避免复制 `public` 到 `public/public` 导致失败。
+
+  注意 — 如果你在 Actions 日志里看到类似的错误：
+  "Permission to starrybamboo/tuanchat-render-demo.git denied to github-actions[bot]." 或 "fatal: unable to access ... 403"
+  - 原因：workflow 的 GITHUB_TOKEN 没有 `contents: write` 权限或者仓库 Actions 权限设置阻止 Actions 写分支。
+  - 解决办法：
+    1. 进入仓库 -> Settings -> Actions -> General -> Workflow permissions：确保已勾选 `Read and write permissions`（而不是 `Read repository contents only`）。
+    2. 如果你的仓库启用了 Branch protection（分支保护），请确保 `gh-pages` 分支允许 GitHub Actions 写入或允许 `GITHUB_TOKEN` 推送。若不允许，暂时取消或修改保护策略。
+    3. 如果你希望使用个人 PAT 令牌作为替代，请在仓库 Settings -> Secrets and variables -> Actions 中添加 `ACTIONS_PAT`（含 repo 范围），并在 workflow 中引用它代替 `GITHUB_TOKEN`（仅在非常需要时使用）。
+    4. 在 Actions 页签中选择本次失败的 workflow，点击 `Re-run jobs`（右侧）以重新触发部署。
+       - 或者你可以在本地创建一个空 commit 来触发：
+  ```powershell
+  git commit --allow-empty -m "Trigger GH Pages redeploy"
+  git push
+  ```
 - 如果希望部署到 `docs/`，可将内容移动到 `docs/` 或在 workflow 中把 `publish_dir` 改为 `docs/`。
 
 如果需要，我可以帮您：
