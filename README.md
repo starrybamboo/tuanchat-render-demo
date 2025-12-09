@@ -12,7 +12,8 @@
 git init
 git add --all
 git commit -m "Initial commit: prepare for GitHub Pages"
-gh repo create <YOUR_USERNAME>/tuanchat-render-demo --public --source=. --remote=origin --push
+# 使用你的 GitHub 用户名创建远程仓库并推送（替换为你的用户名）
+gh repo create starrybamboo/tuanchat-render-demo --public --source=. --remote=origin --push
 ```
 
 2. 手动创建仓库并推送：
@@ -24,7 +25,11 @@ gh repo create <YOUR_USERNAME>/tuanchat-render-demo --public --source=. --remote
 git init
 git add --all
 git commit -m "Initial commit: prepare for GitHub Pages"
-git remote add origin https://github.com/<YOUR_USERNAME>/tuanchat-render-demo.git
+# 如果已添加了错误的 origin，请先修改 remote 或删除并重新添加
+git remote set-url origin https://github.com/starrybamboo/tuanchat-render-demo.git
+# 或 (如果 remote 已存在并需要删除)
+# git remote remove origin
+# git remote add origin https://github.com/starrybamboo/tuanchat-render-demo.git
 git branch -M main
 git push -u origin main
 ```
@@ -52,11 +57,39 @@ git push
 # 触发后 workflow 会自动部署
 ```
 
+常见错误 — 400 Bad Request（示例：您遇到的情况）：
+
+- 原因：通常是因为远程仓库 url 使用了占位符 `<YOUR_USERNAME>`、拼写错误（例如 `.gi`），或是远程仓库不存在。
+- 处理步骤：
+
+```powershell
+# 1) 查看当前远程
+git remote -v
+
+# 2) 如果 remote 指向错误的 URL（例如含 `<YOUR_USERNAME>`），修改远程为正确地址：
+git remote set-url origin https://github.com/starrybamboo/tuanchat-render-demo.git
+
+# 或者先删除再添加：
+git remote remove origin
+git remote add origin https://github.com/starrybamboo/tuanchat-render-demo.git
+
+# 3) 如果远程仓库不存在，请先创建（网页创建或使用 gh）：
+gh repo create starrybamboo/tuanchat-render-demo --public --source=. --remote=origin --push
+
+# 4) 推送分支
+git push -u origin main
+```
+
+如果您不想使用 `gh`，请在 https://github.com 上手动创建仓库 `starrybamboo/tuanchat-render-demo`，然后按照上面 `git remote add` 的步骤来推送。
+
+
 
 注意：
 
 - 该项目的入口文件是 `index.html`（根目录），所有资源都是相对路径，因此适合直接部署到 GitHub Pages。 
 - 工作流文件位于 `.github/workflows/deploy.yml`，会在 push 到 `main` 或 `master` 时把站点内容发布到 `gh-pages` 分支。
+ - 工作流文件位于 `.github/workflows/deploy.yml`，会在 push 到 `main` 或 `master` 时把站点内容发布到 `gh-pages` 分支。
+   - 该 workflow 在发布前，会清理并重新创建一个 `public/` 目录，使用 `rsync` 将仓库内容（排除 `.github`、`.git`、README 等）复制到 `public/` 并发布以避免复制 `public` 到 `public/public` 导致失败。
 - 如果希望部署到 `docs/`，可将内容移动到 `docs/` 或在 workflow 中把 `publish_dir` 改为 `docs/`。
 
 如果需要，我可以帮您：

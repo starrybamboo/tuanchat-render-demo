@@ -19,11 +19,17 @@ jobs:
       - name: Prepare publish directory
         run: |
           set -e
+          # Remove previously created public dir if any, then recreate
+          rm -rf public || true
           mkdir -p public
-          # Copy repo contents to a staging directory and remove files we don't want to publish
-          shopt -s dotglob || true
-          cp -R * public/
-          rm -rf public/.github public/.git public/deploy.ps1 public/README.md public/.gitignore public/.nojekyll
+          # Copy files (including dotfiles) to the public directory; exclude folders/files we don't want published
+          rsync -av --exclude='public' --exclude='.github' --exclude='.git' --exclude='deploy.ps1' --exclude='README.md' --exclude='.gitignore' --exclude='.nojekyll' ./ public/
+
+      - name: Check publish directory
+        run: |
+          echo "--- publish dir contents ---"
+          ls -la public || true
+          echo "--- end publish dir contents ---"
 
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v3
