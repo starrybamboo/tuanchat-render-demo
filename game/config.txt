@@ -1,0 +1,6 @@
+Game_name:realtime_10387;
+Game_key:17d45d1c78f38db;
+Title_img:year 2024, year2025 , 0.8__Artist_quan (kurisu tina)__, 1.1__Artist_kedama milk_ s-1513794252.png;
+Title_bgm:s_Title.mp3;
+Textbox_theme:imss;
+Game_Logo:year 2024, year2025 , 0.8__Artist_quan (kurisu tina)__, 1.1__Artist_kedama milk_ s-1513794252.png;

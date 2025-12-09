@@ -1,0 +1,13 @@
+changeBg:none -next;
+changeFigure:none -next;
+changeFigure:none -left -next;
+changeFigure:none -center -next;
+changeFigure:none -right -next;
+miniAvatar:role_14135_mini_12327.webp;
+汐: 测试无立绘;
+changeFigure:none -left -next;
+changeFigure:none -center -next;
+changeFigure:none -right -next;
+changeFigure:role_14135_sprites_12327.webp -right -transform={"position":{"x":0,"y":108},"scale":{"x":0.85,"y":0.85},"alpha":1,"rotation":0} -next;
+miniAvatar:role_14135_mini_12327.webp;
+汐: 测试;

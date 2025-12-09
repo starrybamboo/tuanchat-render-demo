@@ -1,0 +1,175 @@
+// 科技感选择框样式
+@keyframes hologramFlicker {
+  0%, 100% {
+    opacity: 1;
+  }
+  92% {
+    opacity: 1;
+  }
+  93% {
+    opacity: 0.8;
+  }
+  94% {
+    opacity: 1;
+  }
+  96% {
+    opacity: 0.9;
+  }
+}
+
+@keyframes borderGlow {
+  0%, 100% {
+    box-shadow: 0 0 10px rgba(0, 247, 255, 0.5), 
+                inset 0 0 10px rgba(0, 247, 255, 0.1),
+                0 0 30px rgba(0, 102, 255, 0.3);
+  }
+  50% {
+    box-shadow: 0 0 20px rgba(0, 247, 255, 0.8), 
+                inset 0 0 15px rgba(0, 247, 255, 0.2),
+                0 0 50px rgba(0, 102, 255, 0.5);
+  }
+}
+
+@keyframes dataStream {
+  0% {
+    background-position: 200% 0;
+  }
+  100% {
+    background-position: -200% 0;
+  }
+}
+
+.Choose_Main {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-flow: column;
+  justify-content: center;
+  align-items: center;
+  z-index: 13;
+  background: radial-gradient(ellipse at center, rgba(0, 20, 40, 0.9) 0%, rgba(0, 0, 0, 0.95) 100%);
+  backdrop-filter: blur(5px);
+  
+  // 网格背景
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: 
+      linear-gradient(rgba(0, 247, 255, 0.05) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(0, 247, 255, 0.05) 1px, transparent 1px);
+    background-size: 40px 40px;
+    pointer-events: none;
+    animation: hologramFlicker 4s infinite;
+  }
+}
+
+.Choose_item {
+  font-family: "Orbitron", "Microsoft YaHei", "WebgalUI", sans-serif;
+  cursor: pointer;
+  min-width: 50%;
+  padding: 0.5em 2em 0.5em 2em;
+  font-size: 250%;
+  color: #00f7ff;
+  text-align: center;
+  border-radius: 0;
+  border: 1px solid rgba(0, 247, 255, 0.4);
+  border-left: 4px solid #00f7ff;
+  border-right: 4px solid #00f7ff;
+  box-shadow: 0 0 15px rgba(0, 247, 255, 0.3), 
+              inset 0 0 20px rgba(0, 247, 255, 0.05);
+  background: linear-gradient(135deg, rgba(0, 30, 60, 0.8), rgba(0, 50, 100, 0.6));
+  margin: 0.5em 0 0.5em 0;
+  transition: all 0.3s ease-out;
+  position: relative;
+  overflow: hidden;
+  text-shadow: 0 0 10px rgba(0, 247, 255, 0.8);
+  letter-spacing: 0.1em;
+  backdrop-filter: blur(10px);
+  
+  // 扫描线效果
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 50%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(0, 247, 255, 0.3), transparent);
+    transform: skewX(-20deg);
+    transition: left 0.6s ease-out;
+    pointer-events: none;
+  }
+  
+  // 角落装饰
+  &::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    width: 30px;
+    height: 30px;
+    border-bottom: 2px solid #00f7ff;
+    border-right: 2px solid #00f7ff;
+    pointer-events: none;
+  }
+
+  &:hover {
+    background: linear-gradient(135deg, rgba(0, 60, 100, 0.9), rgba(0, 100, 150, 0.8));
+    box-shadow: 0 0 30px rgba(0, 247, 255, 0.6), 
+                inset 0 0 30px rgba(0, 247, 255, 0.1),
+                0 0 60px rgba(0, 102, 255, 0.4);
+    border-color: #00f7ff;
+    color: #ffffff;
+    text-shadow: 0 0 20px #00f7ff, 0 0 40px #00f7ff;
+    transform: scale(1.02) translateX(10px);
+    animation: borderGlow 1s ease-in-out infinite;
+    
+    &::before {
+      left: 150%;
+    }
+  }
+}
+
+.Choose_item_disabled {
+  font-family: "Orbitron", "Microsoft YaHei", "WebgalUI", sans-serif;
+  cursor: not-allowed;
+  min-width: 50%;
+  padding: 0.5em 2em 0.5em 2em;
+  font-size: 250%;
+  color: rgba(0, 247, 255, 0.3);
+  text-align: center;
+  border-radius: 0;
+  border: 1px solid rgba(0, 247, 255, 0.15);
+  border-left: 4px solid rgba(0, 247, 255, 0.2);
+  border-right: 4px solid rgba(0, 247, 255, 0.2);
+  box-shadow: 0 0 10px rgba(0, 247, 255, 0.1);
+  background: linear-gradient(135deg, rgba(0, 20, 40, 0.5), rgba(0, 30, 50, 0.4));
+  margin: 0.5em 0 0.5em 0;
+  transition: all 0.3s ease-out;
+  position: relative;
+  text-shadow: none;
+  letter-spacing: 0.1em;
+  backdrop-filter: blur(5px);
+  
+  // 故障效果线条
+  &::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 0;
+    width: 100%;
+    height: 1px;
+    background: repeating-linear-gradient(90deg, transparent, transparent 10px, rgba(255, 0, 0, 0.3) 10px, rgba(255, 0, 0, 0.3) 20px);
+  }
+}
+
+.Choose_item_outer {
+  color: #00f7ff;
+  min-width: 50%;
+  text-shadow: 0 0 5px rgba(0, 247, 255, 0.5);
+}
