@@ -34,18 +34,20 @@ git branch -M main
 git push -u origin main
 ```
 
-完成后（第一次 push 到仓库后），GitHub Actions 会自动构建并把站点发布到 `gh-pages` 分支，然后 GitHub Pages 自动托管。您可以在仓库 Settings -> Pages 中查看生效的页面 URL（通常为 https://<USERNAME>.github.io/tuanchat-render-demo/）。
+完成后（第一次 push 到仓库后），GitHub Pages 将自动托管仓库中被选为 Pages 源（`gh-pages` 分支、`main` 分支或 `docs/` 目录）的内容，生成页面 URL（通常为 https://<USERNAME>.github.io/tuanchat-render-demo/）。
 
 确认部署状态：
 
-- 进入仓库页面，点击 `Actions` 查看 `Deploy to GitHub Pages` 的运行日志，确保 Workflow 成功（绿色）。
-- 进入 `Settings -> Pages`，查看 Source 是否选中 `gh-pages` 分支，并记录页面 URL。
+- 进入 `Settings -> Pages` 查看是否配置了正确的 Source（`gh-pages` 分支 或 `main`/`docs`）并记录页面 URL。
 - 访问页面 URL，确认 `index.html` 能正常加载并且所有资源链接正确。
 
 常见问题：
 
 - 如果页面资源无法加载，请确认资源的引用路径是相对路径，并且不存在以斜杠或外部域名为起始的绝对路径。
-- 如果部署失败并提示权限问题，请前往仓库 `Settings -> Secrets and variables -> Actions`，添加 `PERSONAL_ACCESS_TOKEN` 或使用 `GITHUB_TOKEN` 默认权限（通常足够）。
+ - 如果页面没有正确发布或提示 404，请先确认：
+   - `gh-pages` 分支或你选择发布的分支确实存在并包含 `index.html` 与资源（在仓库的 `Branches` 或 `gh-pages` 分支内检查）。
+   - 仓库为 Public，否则 GitHub Pages 可能有额外限制（但通常 private repos 也可以 Pages，取决于设置）。
+   - Pages Source 已正确保存并启用（在 Settings -> Pages 中）。
 
 手动触发部署（可选）：
 
@@ -54,7 +56,7 @@ git push -u origin main
 git add .
 git commit -m "Update the site"
 git push
-# 触发后 workflow 会自动部署
+# 触发后 GitHub Pages 会根据选中的 Source 自动发布
 ```
 
 常见错误 — 400 Bad Request（示例：您遇到的情况）：
@@ -87,24 +89,23 @@ git push -u origin main
 注意：
 
 - 该项目的入口文件是 `index.html`（根目录），所有资源都是相对路径，因此适合直接部署到 GitHub Pages。 
-- 工作流文件位于 `.github/workflows/deploy.yml`，会在 push 到 `main` 或 `master` 时把站点内容发布到 `gh-pages` 分支。
- - 工作流文件位于 `.github/workflows/deploy.yml`，会在 push 到 `main` 或 `master` 时把站点内容发布到 `gh-pages` 分支。
-   - 该 workflow 在发布前，会清理并重新创建一个 `public/` 目录，使用 `rsync` 将仓库内容（排除 `.github`、`.git`、README 等）复制到 `public/` 并发布以避免复制 `public` 到 `public/public` 导致失败。
+ - 项目不再使用 GitHub Actions 的 CD 部署工作流（已禁用）。
+   - 如果你想直接使用 GitHub Pages 的自动发布，请在仓库 Settings -> Pages 中设置 Source：
+     - `gh-pages` 分支（已被部署内容），或
+     - `main` 分支根目录，或
+     - `main`/`docs` 目录。
+   - GitHub 会自动托管所选分支/目录，无需 CI 来执行发布步骤。
 
-  注意 — 如果你在 Actions 日志里看到类似的错误：
-  "Permission to starrybamboo/tuanchat-render-demo.git denied to github-actions[bot]." 或 "fatal: unable to access ... 403"
-  - 原因：workflow 的 GITHUB_TOKEN 没有 `contents: write` 权限或者仓库 Actions 权限设置阻止 Actions 写分支。
-  - 解决办法：
-    1. 进入仓库 -> Settings -> Actions -> General -> Workflow permissions：确保已勾选 `Read and write permissions`（而不是 `Read repository contents only`）。
-    2. 如果你的仓库启用了 Branch protection（分支保护），请确保 `gh-pages` 分支允许 GitHub Actions 写入或允许 `GITHUB_TOKEN` 推送。若不允许，暂时取消或修改保护策略。
-    3. 如果你希望使用个人 PAT 令牌作为替代，请在仓库 Settings -> Secrets and variables -> Actions 中添加 `ACTIONS_PAT`（含 repo 范围），并在 workflow 中引用它代替 `GITHUB_TOKEN`（仅在非常需要时使用）。
-    4. 在 Actions 页签中选择本次失败的 workflow，点击 `Re-run jobs`（右侧）以重新触发部署。
-       - 或者你可以在本地创建一个空 commit 来触发：
+  如果你遇到 Pages 发布失败或 403 错误，请按以下步骤排查：
+  - 确认 `gh-pages` 分支存在并包含 `index.html` 与相应资源；
+  - 检查 Pages Source（Settings -> Pages）是否正确设置为 `gh-pages`/`main`/`docs` 并保存；
+  - 如有分支保护或特殊工作流权限限制，请根据 repository 设置做出相应调整；
+  - 如需强制重新部署，可在本地提交空提交并 push：
   ```powershell
   git commit --allow-empty -m "Trigger GH Pages redeploy"
   git push
   ```
-- 如果希望部署到 `docs/`，可将内容移动到 `docs/` 或在 workflow 中把 `publish_dir` 改为 `docs/`。
+- 如果希望部署到 `docs/`，可将内容移动到 `docs/` 并在仓库 Settings -> Pages 中将 Source 设置为 `main` / `docs`。
 
 如果需要，我可以帮您：
 - 调整 `publish_dir` 发布到 `docs` 并移动文件到 `docs`。

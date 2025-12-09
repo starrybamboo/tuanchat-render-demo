@@ -1,8 +1,6 @@
-name: Deploy to GitHub Pages
+name: Deploy to GitHub Pages (DISABLED - removed by request)
 
-on:
-  push:
-    branches: [ main, master ]
+on: {}
 
 permissions:
   contents: 'write'   # need write access to create/overwrite gh-pages branch
